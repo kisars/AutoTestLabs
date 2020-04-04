@@ -11,14 +11,14 @@ public class TestLoginPage {
     private String password = "uniquepass";
 
     @Test
-    @Category(Categories.Logintests.class)
+    @Category(SuiteCategories.Logintests.class)
     public void TestLoginFunction()  {
         login.performLogin(user,password);
         driver.quit();
     }
 
     @Test
-    @Category(Categories.Logintests.class)
+    @Category(SuiteCategories.Logintests.class)
     public void TestLoginFailFunction()  {
         password = "12345467";
         login.performWrongLogin(user,password);

@@ -1,3 +1,3 @@
-public class Categories {
+public class SuiteCategories {
     public interface Logintests {}
 }
