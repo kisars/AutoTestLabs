@@ -51,8 +51,7 @@ public class Homepage {
     }
     private boolean checkStatus() {
         String classes = status.getAttribute("class");
-        for (String c : classes.split(" "))
-            if (c.contains("busy"))
+       if (classes.contains("busy"))
                 return true;
         Assert.assertTrue(false);
         return false;
@@ -60,9 +59,9 @@ public class Homepage {
     public void changeStatus()
     {
         openPage();
-        //icon.click();
-        //WebElement change = driver.findElement(By.xpath("/html/body/div[8]/div/div/ul[2]/li[3]/span[2]"));
-        //change.click();
+        icon.click();
+        WebElement change = driver.findElement(By.xpath("/html/body/div[8]/div/div/ul[2]/li[3]/span[2]"));
+        change.click();
         checkStatus();
     }
     public void sendMessage() {
