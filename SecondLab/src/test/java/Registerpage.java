@@ -1,10 +1,10 @@
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.JavascriptExecutor;
 
 import java.util.concurrent.TimeUnit;
 public class Registerpage {
@@ -12,11 +12,10 @@ public class Registerpage {
     private WebDriverWait webDriverWait;
     private String url = "https://chat.kiselevaa.ru";
 
-    public Registerpage(WebDriver driver, long timeOutInSeconds) {
+    public Registerpage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        this.webDriverWait = new WebDriverWait(driver, timeOutInSeconds);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @FindBy(id = "name")
@@ -58,13 +57,17 @@ public class Registerpage {
     private void openPage()
     {
         driver.get(url);
-        Loginpage login = new Loginpage(driver,10);
+        Loginpage login = new Loginpage(driver);
         login.bReg.click();
     }
 
-    private void assertLoginSuccess()
+    private void assertRegSuccess()
     {
-        Assert.assertTrue(true);
+        Assert.assertTrue(driver.findElements(By.xpath("//*[@id=\"login-card\"]/header/h2")).size() != 0);
+    }
+    private void assertRegFail()
+    {
+        Assert.assertTrue(driver.findElements(By.xpath("//*[@id=\"login-card\"]/div[1]/div[2]/label/div/div")).size() != 0);
     }
     public void performReg(String user,String emails, String pass) {
         openPage();
@@ -72,6 +75,15 @@ public class Registerpage {
         enterEmail(emails);
         enterPassword(pass);
         enterConfPassword(pass);
-        assertLoginSuccess();
+        assertRegSuccess();
+    }
+    public void performWrongReg(String user,String emails, String pass) {
+        openPage();
+        enterLogin(user);
+        emails="test";
+        enterEmail(emails);
+        enterPassword(pass);
+        enterConfPassword(pass);
+        assertRegFail();
     }
 }

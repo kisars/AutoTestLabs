@@ -1,4 +1,5 @@
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,11 +15,10 @@ public class Loginpage {
     private WebDriverWait webDriverWait;
     private String url = "https://chat.kiselevaa.ru";
 
-    public Loginpage(WebDriver driver, long timeOutInSeconds) {
+    public Loginpage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        this.webDriverWait = new WebDriverWait(driver, timeOutInSeconds);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @FindBy(id = "emailOrUsername")
@@ -30,7 +30,7 @@ public class Loginpage {
     @FindBy(id = "submit-form")
     private WebElement bSubmitLogin;
 
-    @FindBy(id = "login-card")
+    @FindBy(xpath = "//*[@id=\"login-card\"]/div[2]/button[3]")
     public WebElement bReg;
 
     private Loginpage enterLogin(String user)
@@ -52,7 +52,7 @@ public class Loginpage {
 
     private void assertLoginSuccess()
     {
-        Assert.assertTrue(driver.getCurrentUrl().contains("home"));
+        Assert.assertTrue(driver.findElements(By.xpath("//*[@id=\"rocket-chat\"]/aside/div[2]/ul[2]/li/a/div[2]/div[1]/div[1]/div/div[2]") ).size() != 0);
     }
     public void performLogin(String user, String pass) {
         openPage();
@@ -60,4 +60,15 @@ public class Loginpage {
         enterPassword(pass);
         assertLoginSuccess();
     }
+    private void assertLoginFail()
+    {
+        Assert.assertTrue(driver.findElements(By.xpath("//*[@id=\"toast-container\"]") ).size() != 0);
+    }
+    public void performWrongLogin(String user, String pass) {
+        openPage();
+        enterLogin(user);
+        enterPassword(pass);
+        assertLoginFail();
+    }
+
 }
